@@ -1,0 +1,59 @@
+Ex1
+
+set serveroutput on;
+
+CREATE OR REPLACE FUNCTION parte1 (pids IN studenti.id%type)
+  RETURN VARCHAR2
+AS
+
+  numarator      INTEGER;
+  mesaj        VARCHAR2(32767);
+  idul     INTEGER;
+
+BEGIN
+SELECT COUNT(*) INTO numarator FROM studenti 
+WHERE id = pids ;
+  IF numarator != 0 THEN
+  SELECT id INTO idul FROM cursuri WHERE titlu_curs='Logica';
+  ELSE
+    mesaj := 'Not existent';
+    
+    SELECT COUNT(*) INTO numarator FROM note WHERE id_student = pids ;
+    IF numarator != 0 THEN
+       INSERT INTO note (id, id_student, id_curs, valoare) VALUES (8000, pids, idul, 5); 
+       COMMIT;
+       mesaj := 'Inserted';
+       ELSE
+       mesaj := 'Not inserted';
+    END IF;
+  END IF;
+return mesaj;
+END parte1;
+/
+SELECT parte1(1) FROM DUAL;
+
+
+
+CREATE OR REPLACE FUNCTION parte2(pids IN studenti.id%type)
+  RETURN VARCHAR2
+AS
+  numarator      INTEGER;
+  mesaj        VARCHAR2(32767);
+  idul     INTEGER;
+
+  exp EXCEPTION;
+  PRAGMA EXCEPTION_INIT(exp, -20001);
+BEGIN
+ SELECT id INTO idul FROM cursuri WHERE titlu_curs='Logica';
+ INSERT INTO note (id, id_student, id_curs, valoare) VALUES (8000, pids, idul, 8); 
+ COMMIT;
+ mesaj:= 'Inserted';
+ return mesaj;
+ EXCEPTION
+ WHEN dup_val_on_index THEN
+         raise_application_error (-20001, 'Studentul cu ID-ul ' || pids || ' are note deja');
+END parte2; 
+/
+SELECT parte2(1) FROM DUAL;
+
+
