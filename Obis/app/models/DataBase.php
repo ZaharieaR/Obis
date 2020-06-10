@@ -29,14 +29,32 @@ class Database{
     }
 
     public function getInitContent() {
-        $sql = "SELECT * FROM brfss WHERE data_id < 100";
-        $result = mysqli_query($this->conn , $sql);
+        $querry = "SELECT * FROM brfss WHERE data_id < 11";
+        $result = mysqli_query($this->conn , $querry);
         $resultCheck = mysqli_num_rows($result);
 
         if($resultCheck > 0) {
             return $result;
         }
         return "NO DATA FOUND!";
+    }
+
+    public function getAvailableAttribute($attribute) {
+        $querry = "SELECT DISTINCT " . $attribute . " from brfss";
+        $result = mysqli_query($this->conn , $querry);
+
+        if($result == false) {
+            $result = "NO DATA FOUND!";
+            return $result;
+        }
+
+        $resultCheck = mysqli_num_rows($result);
+
+        if($resultCheck > 0) {
+            return $result;
+        }
+        $result = "NO DATA FOUND!";
+        return $result;
     }
 
 

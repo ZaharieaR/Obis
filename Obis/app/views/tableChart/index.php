@@ -53,12 +53,23 @@
                 </div>
             </a>
         </div>
-        
-        <?php
-            $controller = new tableChart;
-            $controller -> init();
-        ?>
+        <div class="continut1">
 
+            <div class="incercuit1">
+                <?php
+                    $controller = new tableChart;
+                    $controller -> init();
+                ?>
+                
+            </div>
+        </div>
+        
+        <div class="filtersBox" >
+            <?php
+                $controller -> getFiltersContent();
+            ?> 
+        </div>
+        
         <div class="footer">
             <div class="inner_footer">
                 <div class="logo_container">
