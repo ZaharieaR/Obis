@@ -254,30 +254,29 @@
       }
     });
   </script>
-        <!-- </div> -->
+    </div>
         <div class="footer">
-            <div class="inner_footer">
-                <div class="logo_container">
-                    <img src="./css/iconitaa.jpg" />
-                </div>
-                <div class="footer_third">
-                    <h1>Mail</h2>
-                    <p href="#">rachitacosminv@gmail.com</p>
-                    <p href="#">robert.zahariea@gmail.com</p>
-                </div>
-                <div class="footer_third">
-                    <h1>Phone</h2>
-                    <p href="#">0739184017</p>
-                    <p href="#">0754434535</p>
-                </div>
-                <div class="footer_third">
-                    <h1>Help?</h2>
-                    <p href="#">Terms &amp; Conditions</p>
-                    <p href="#">Privacy Policy</p>
-                </div>
+        <div class="inner_footer">
+            <div class="logo_container">
+                <img src="http://localhost/Obis/app/views/home/css/logo.png" alt="Iconnita" >
             </div>
-        
+            <div class="footer_third">
+                <h1>Mail</h2>
+                <p href="#">rachitacosminv@gmail.com</p>
+                <p href="#">robert.zahariea@gmail.com</p>
+            </div>
+            <div class="footer_third">
+                <h1>Phone</h2>
+                <p href="#">0739184017</p>
+                <p href="#">0754434535</p>
+            </div>
+            <div class="footer_third">
+                <h1>Help?</h2>
+                <p href="#">Terms &amp; Conditions</p>
+                <p href="#">Privacy Policy</p>
+            </div>
         </div>
+    </div>
     </body>
 
 </html>

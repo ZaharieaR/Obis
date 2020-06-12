@@ -9,7 +9,6 @@ class TableChart extends Controller {
         $url = $_SERVER['REQUEST_URI'];
         $query = parse_url($url, PHP_URL_QUERY);
         parse_str($query, $this->query_arr);
-        // var_dump($this->query_arr);
     }
 
     public function index() {
@@ -20,6 +19,24 @@ class TableChart extends Controller {
     public function init() {
 
         $content = $this->model -> getInitContent($this->query_arr);
+
+        $aux = $this->query_arr;
+        $aux['page'] = $this->query_arr['page'] + 1;
+        $contentNextPage = $this->model -> getInitContent($aux);
+        if($contentNextPage != "NO DATA FOUND!") {
+            echo "<div>
+                    <p onclick=\"nextPage()\"> Next page -> </p>
+                 </div> ";
+        }
+
+        $aux = $this->query_arr;
+        $aux['page'] = $this->query_arr['page'] - 1;
+        $contentNextPage = $this->model -> getInitContent($aux);
+        if($contentNextPage != "NO DATA FOUND!") {
+            echo "<div>
+                    <p onclick=\"prevPage()\"> <- Previous page </p>
+                 </div> ";
+        }
 
         if($content == "NO DATA FOUND!") {
             echo "No data";
@@ -78,7 +95,7 @@ class TableChart extends Controller {
             echo "<br>";
         else {
             echo "<label for=\"Location\"> Choose a location: </label>
-            <select name=\"Location\" id=\"Location\" style=\"width:100px\">
+            <select name=\"Location\" id=\"Location\">
             <option value=\"None\"> None </option>";
             while($location = mysqli_fetch_assoc($locations)) {
                 if($location['Locationdesc'] == $this->query_arr['Location'])

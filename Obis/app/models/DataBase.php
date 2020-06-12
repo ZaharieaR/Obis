@@ -18,7 +18,6 @@ class Database{
     }
 
     public function getInitContent($query_arr) {
-        $querry = "SELECT * FROM brfss WHERE 1 ";
         $querry = "SELECT * FROM brfss WHERE 1";
         if($query_arr["Year"] != "None")
             $querry = $querry . " AND Year = '" . $query_arr["Year"] . "'";
@@ -34,11 +33,20 @@ class Database{
 
         if($query_arr["BreakOut"] != "None")
             $querry = $querry . " AND Break_Out = '" . $query_arr["BreakOut"] . "'";
+        
+        // if(!isset($_GET['page'])){
+        //     $query_arr["page"] = 1;
+        // }
 
         $offset = ($query_arr["page"] - 1) * 30;
         $querry = $querry . " LIMIT 30 OFFSET " . $offset;
         
         $result = mysqli_query($this->conn , $querry);
+        
+        if($result == false) {
+            $result = "NO DATA FOUND!";
+            return $result;
+        }
         $resultCheck = mysqli_num_rows($result);
 
         if($resultCheck > 0) {
