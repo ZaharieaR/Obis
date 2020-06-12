@@ -12,46 +12,27 @@ class TableChart extends Controller {
     }
 
     public function index() {
-        $user = $this->model('DataBase');
         $this->view('tableChart/index');
     }
 
     public function init() {
 
         $content = $this->model -> getInitContent($this->query_arr);
-
-        $aux = $this->query_arr;
-        $aux['page'] = $this->query_arr['page'] + 1;
-        $contentNextPage = $this->model -> getInitContent($aux);
-        if($contentNextPage != "NO DATA FOUND!") {
-            echo "<div>
-                    <p onclick=\"nextPage()\"> Next page -> </p>
-                 </div> ";
-        }
-
-        $aux = $this->query_arr;
-        $aux['page'] = $this->query_arr['page'] - 1;
-        $contentNextPage = $this->model -> getInitContent($aux);
-        if($contentNextPage != "NO DATA FOUND!") {
-            echo "<div>
-                    <p onclick=\"prevPage()\"> <- Previous page </p>
-                 </div> ";
-        }
-
         if($content == "NO DATA FOUND!") {
             echo "No data";
         } else {
-            echo "<table>
+            echo " <div class= \"TabelComplet\">";
+            echo "<table  class=\"chartTabel\">
                     <tr>
-                        <th>Data_id</th>
-                        <th>Year</th>
-                        <th>Locationabbr</th>
-                        <th>Locationdesc</th>
-                        <th>Response</th>
-                        <th>Break_Out</th>
-                        <th>Break_Out_Category</th>
-                        <th>Sample_Size</th>
-                        <th>Data_value</th>
+                        <td>Data_id</td>
+                        <td>Year</td>
+                        <td>Locationabbr</td>
+                        <td>Locationdesc</td>
+                        <td>Response</td>
+                        <td>Break_Out</td>
+                        <td>Break_Out_Category</td>
+                        <td>Sample_Size</td>
+                        <td>Data_value</td>
                     </tr>";
         
             while($row = mysqli_fetch_assoc($content)) { 
@@ -69,6 +50,26 @@ class TableChart extends Controller {
             }
             echo "</table>";
         }
+        $aux = $this->query_arr;
+        $aux['page'] = $this->query_arr['page'] + 1;
+        $contentNextPage = $this->model -> getInitContent($aux);
+
+        $aux2 = $this->query_arr;
+        $aux2['page'] = $this->query_arr['page'] - 1;
+        $contentPrevPage = $this->model -> getInitContent($aux2);
+        if($contentPrevPage == "No DATA FOUND!" && $contentNextPage == "No DATA FOUND!") {
+            ;
+        } else {
+            echo "<div class=\"pageButtons\">";
+            if($contentPrevPage != "NO DATA FOUND!") {
+                echo "<p onclick=\"prevPage()\"> <-- Previous page </p>";
+            }
+            if($contentNextPage != "NO DATA FOUND!") {
+                echo "<p onclick=\"nextPage()\"> Next page --> </p>";
+            }
+            echo "</div>";
+        }
+        echo "</div>";
     }
 
     public function getFiltersContent() {

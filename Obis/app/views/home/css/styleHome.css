@@ -87,7 +87,7 @@ body
 }
 .continut1
 { 
-    padding-left:280px;
+    padding-left:250px;
 }
 .continut2
 {
@@ -219,6 +219,7 @@ header
     padding-top: 30px;  
     min-height: 70px;
     border-bottom: #ff6a37 5px solid;
+    width:100%;
 }
 header a
 {
@@ -398,4 +399,38 @@ header .highlight,header .current a
     margin-left:250px;;
     width:65%;
     height:50%;
+}
+.buton_inapoi{
+    margin-left:700px;
+    
+}
+.pageButtons
+{
+    display:flex;
+    justify-content: space-between;
+
+}
+.chartTabel {
+    border:3px solid black;
+    max-width: 100%;
+    overflow: scroll;
+}
+.chartTabel table
+{
+    border-collapse: collapse;
+    width: 100%;
+}
+.chartTabel td {
+    border: 1px solid black;
+    padding: 2px;
+}
+.TabelComplet {
+    width: 80%;
+}
+.TabelComplet table{
+    width:100%;
+}
+.container-continut {
+    display: flex; 
+    justify-content: space-around;
 }

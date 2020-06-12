@@ -15,10 +15,6 @@ class App {
     }
 
     public function __construct() {
-
-        // $db = new Database;
-        // $this->conn = $db->connect(); 
-
         $url = $this->parseUrl();
 
         if(file_exists('../app/controllers/' . $url[0] . '.php')) {
@@ -44,7 +40,6 @@ class App {
                 unset($url[1]);
             }
         }
-
     }
 
     public function parseUrl() {

@@ -7,14 +7,14 @@ class Database{
     private $db_name = 'twdb';
     private $conn;
 
-    public function __construct(){
-        
-        $this->conn = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
-
+    public function getSemple_Size($data_id) {
+        $querry = "SELECT * FROM brfss WHERE data_id = " . $data_id;
+        $result = mysqli_query($this->conn, $querry);
+        return $result;
     }
 
-    public function getConnection() {
-        return $this->conn;
+    public function __construct(){
+        $this->conn = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
     public function getInitContent($query_arr) {
@@ -33,16 +33,12 @@ class Database{
 
         if($query_arr["BreakOut"] != "None")
             $querry = $querry . " AND Break_Out = '" . $query_arr["BreakOut"] . "'";
-        
-        // if(!isset($_GET['page'])){
-        //     $query_arr["page"] = 1;
-        // }
 
         $offset = ($query_arr["page"] - 1) * 30;
         $querry = $querry . " LIMIT 30 OFFSET " . $offset;
         
         $result = mysqli_query($this->conn , $querry);
-        
+
         if($result == false) {
             $result = "NO DATA FOUND!";
             return $result;

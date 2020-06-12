@@ -24,7 +24,7 @@
                 <div id="branding">
                     <h1>
                         <span class="highlight">
-                            Diagrama Pie
+                            Table View
                         </span>
                     </h1>
                 </div>
@@ -39,30 +39,31 @@
             </div>
         </header>
         <div class="chenar">
-        <a style="color: black; text-decoration: none;" class="Chenare" href = '../pieChart/index'>
+        <a style="color: black; text-decoration: none;" class="Chenare" 
+        href = '../pieChart/index?Year=2018&Response=Obese%20(BMI%2030.0%20-%2099.8)&Break_Out_Category=Age+Group&BreakOut=18-24'>
                 <div class="icon"><i class="fa fa-pie-chart" aria-hidden="true"></i></div>
                 <div class="continut">
-                    <h3>Diagrama Pie</h3>
+                    <h3>Pie Chart View</h3>
                 </div>
         </a>
             <a style="color: black; text-decoration: none;" class="Chenare" 
             href = '../tableChart/index?Year=2018&Location=None&Response=None&BreakOutCategory=Age+Group&BreakOut=None&page=1'>
                 <div class="icon"><i class="fa fa-table" aria-hidden="true"></i></div>
                 <div class="continut">
-                    <h3>Diagrama Tabel</h3>
+                    <h3>Table View</h3>
                 </div>
             </a>
     
             <a style="color: black; text-decoration: none;" class="Chenare" href = '../graphTable/index'>
                 <div class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
                 <div class="continut">
-                    <h3>Diagrama Tabel</h3>
+                    <h3>Bar Chart View</h3>
                 </div>
             </a>
         </div>
     
         <div style="text-align: center; margin-top:20px" >  
-            <form action="/Obis/public/tableChart/index" >
+            <form>
             
             <?php
                 $controller = new tableChart;
