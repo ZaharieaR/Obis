@@ -11,6 +11,7 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 </head>
 
 <body>
@@ -20,7 +21,7 @@
                 <div id="branding">
                     <h1>
                         <span class="highlight">
-                           Bar Chart View
+                            Bar Chart View
                         </span>
                     </h1>
                 </div>
@@ -35,7 +36,7 @@
             </div>
         </header>
         <div class="chenar">
-        <a style="color: black; text-decoration: none;" class="Chenare" 
+        <a style="color: black; text-decoration: none;" class="Chenare"
         href = '../pieChart/index?Year=2018&Response=Obese%20(BMI%2030.0%20-%2099.8)&Break_Out_Category=Age+Group&BreakOut=18-24'>
                 <div class="icon"><i class="fa fa-pie-chart" aria-hidden="true"></i></div>
                 <div class="continut">
@@ -57,14 +58,97 @@
                 </div>
             </a>
         </div>
-    <div class="chenar_graph">
+
+        <div style="text-align: center; margin-top:20px" >  
+            <form>
+
+            <?php
+                $controller = new graphTable;
+                $controller -> getFilterOf("Year");
+                $controller -> getFilterOf("Response");
+                $controller -> getFilterOf("Break_Out_Category");
+                $controller -> getBrkOutFilterContent();
+            ?> 
+              <input onclick=verifyFilters() type="submit" value="Apply filters"> 
+            </form>
+        </div> 
+
+        <script>  
+        var querryStr = "";
+        var year = document.getElementById("Year").value;
+        var response = document.getElementById("Response").value;
+        var brkCategory = document.getElementById("Break_Out_Category").value;
+        var brkOut = document.getElementById("Break_Out").value;
+    
+        querryStr = "?Year=" + year + "&Response=" + response + "&Break_Out_Category=" + brkCategory + "&Break_Out=" + brkOut;
+        
+          function verifyFilters() {
+            var year = document.getElementById("Year").value;
+            var response = document.getElementById("Response").value;
+            var brkCategory = document.getElementById("Break_Out_Category").value;
+            var brkOut = document.getElementById("Break_Out").value;
+            if(year == "None"){
+              alert("You need to select all filters!");
+              event.preventDefault();
+            }
+            if(response == "None") {
+              alert("You need to select all filters!");
+              event.preventDefault();
+            }
+            if(brkCategory == "None") {
+              alert("You need to select all filters!");
+              event.preventDefault();
+            }
+            if(brkOut == "None") {
+              alert("You need to select all filters!");
+              event.preventDefault();
+            }
+            querryStr = "?Year=" + year + "&Response=" + response + "&Break_Out_Category=" + brkCategory + "&Break_Out=" + brkOut;
+          }
+
+          var brkCatToUpdate = document.getElementById("Break_Out_Category");
+          var breakOutCategoryUpdate = function() {
+              var value = brkCatToUpdate.value;
+              var index = window.location.href.indexOf("Break_Out_Category=");
+              var sel = window.location.href.substr(0, index);
+              window.location.href = sel + "Break_Out_Category=" + value + "&BreakOut=None";
+          }
+          brkCatToUpdate.addEventListener("change",breakOutCategoryUpdate);
+        </script> 
+
+        <div class="chenar_graph">
       
         <canvas id="myChart"></canvas>
 
-    </div>
-        <!-- <div class="chenar_pie"> -->
+        </div>
+
         <script>
-          var o=[];
+
+        function getJson() { 
+          return new Promise(function(resolve){
+            fetch('http://localhost/Obis/public/api/getPieChartData/' + querryStr)
+                  .then(response => response.json())
+                  .then(data => resolve(data));
+          });  
+
+        }
+
+        async function callFct() {
+          var json = await getJson();
+          var locations = [];
+          var sampleSize = [];
+          var dataValue = [];
+          var dataToPrint = [];
+          
+          for(var i=0; i<json.length; i++) {
+            var jsonElem = json[i];
+            locations.push(jsonElem["Location"]);
+            sampleSize.push(jsonElem["SampleSize"]);
+            dataValue.push(jsonElem["DataValue"]);
+            dataToPrint.push(Number((dataValue[i]/100) * sampleSize[i]));
+          }
+
+          var colors=[];
           for(var i=0;i<56;i++)
           {
             var symbols,color;
@@ -74,186 +158,66 @@
             {
               color=color + symbols[Math.floor(Math.random() * 16)];
             }
-              o[i]=color;
+            colors[i]=color;
           }
-    let myChart = document.getElementById('myChart').getContext('2d');
+          let myChart = document.getElementById('myChart').getContext('2d');
 
-    // Global Options
-    Chart.defaults.global.defaultFontFamily = 'Lato';
-    Chart.defaults.global.defaultFontSize = 18;
-    Chart.defaults.global.defaultFontColor = '#777';
-    // Chart.defaults.global.animation.duration=200;
-    
-    let massPopChart = new Chart(myChart, {
-      type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
-      data:{
-        labels:['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-        'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford'],
-        datasets:[{
-          label:'Population',
-          data:[
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            617594,
-            181045,
-            153060,
-            106519,
-            105162,
-            95072
-          ],
-          backgroundColor:'green',
-          backgroundColor:[
-            o[0],
-            o[1],
-            o[2],
-            o[3],
-            o[4],
-            o[5],
-            o[6],
-            o[7],
-            o[8],
-            o[9],
-            o[10],
-            o[11],
-            o[12],
-            o[13],
-            o[14],
-            o[15],
-            o[16],
-            o[17],
-            o[18],
-            o[19],
-            o[20],
-            o[21],
-            o[22],
-            o[23],
-            o[24],
-            o[25],
-            o[26],
-            o[27],
-            o[28],
-            o[29],
-            o[30],
-            o[31],
-            o[32],
-            o[33],
-            o[34],
-            o[35],
-            o[36],
-            o[37],
-            o[38],
-            o[39],
-            o[40],
-            o[41],
-            o[42],
-            o[43],
-            o[44],
-            o[45],
-            o[46],
-            o[47],
-            o[48],
-            o[49],
-            o[50],
-            o[51],
-            o[52],
-            o[53],
-            o[54],
-            o[55]
-          ],
-          borderWidth:1,
-          borderColor:'#777',
-          hoverBorderWidth:3,
-          hoverBorderColor:'#000'
-        }]
-      },
-      options:{
-        title:{
-          display:true,
-          text:'Largest Cities In Massachusetts',
-          fontSize:25
-        },
-        legend:{
-          display:true,
-          position:'right',
-          labels:{
-            fontColor:'#000'
-          }
-        },
-        layout:{
-          padding:{
-            left:50,
-            right:0,
-            bottom:0,
-            top:0
-          }
-        },
-        tooltips:{
-          enabled:true
-        },
-        animation:
-        {
-          duration:4000,
-          easing:'linear'
+          // Global Options
+          Chart.defaults.global.defaultFontFamily = 'Lato';
+          Chart.defaults.global.defaultFontSize = 18;
+          Chart.defaults.global.defaultFontColor = '#777';
+
+          let massPopChart = new Chart(myChart, {
+            type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+            data:{
+              labels:locations,
+              datasets:[{
+                label:'Obesity',
+                data:dataToPrint,
+                backgroundColor:[
+                  ...colors
+                ],
+                borderWidth:1,
+                borderColor:'#777',
+                hoverBorderWidth:3,
+                hoverBorderColor:'#000'
+              }]
+            },
+            options:{
+              rotation:180,
+            animation:
+            {
+              animateScale:true
+            },
+              title:{
+              },
+              legend:{
+                display:true,
+                position:'right',
+                labels:{
+                  fontColor:'#000'
+                }
+              },
+              layout:{
+                padding:{
+                  left:50,
+                  right:0,
+                  bottom:0,
+                  top:0
+                }
+              },
+              tooltips:{
+                enabled:true
+              }
+
+            },
+            animation:
+            {
+              animateScale:true
+            }
+          });
         }
-      }
-    });
+        callFct(); 
   </script>
     </div>
         <div class="footer">

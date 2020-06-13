@@ -37,8 +37,6 @@ class PieChart extends Controller {
     }
 
     public function getBrkOutFilterContent() {
-        var_dump($this->query_arr);
-        echo "<br>";
         $breakOutSelected = $this->query_arr["Break_Out_Category"];
 
         $brkOut = $this->model->getAvailableBreakOutValues($breakOutSelected);

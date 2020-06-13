@@ -23,9 +23,7 @@
             </div>
             <nav>
                 <ul>
-                    <!-- <li><a href="index">Home</a></li>
-                    <li><a href="services.html">Table</a></li>
-                    <li><a href="about.html">Weight Calculator</a></li> -->
+                    <li><a href="../../documentation/documentation.html">Documentation</a></li>
 
                 </ul>
             </nav>
@@ -42,7 +40,7 @@
     </section>
     <div class="chenar">
         <a style="color: black; text-decoration: none;" class="Chenare" 
-        href = '../pieChart/index?Year=2018&Response=Obese%20(BMI%2030.0%20-%2099.8)&Break_Out_Category=Age+Group&BreakOut=18-24'>
+        href = '../pieChart/index?Year=2016&Response=Obese%20(BMI%2030.0%20-%2099.8)&Break_Out_Category=Age+Group&BreakOut=18-24'>
             <div class="icon"><i class="fa fa-pie-chart" aria-hidden="true"></i></div>
             <div class="continut">
                 <h3>Pie Chart View</h3>
@@ -56,7 +54,8 @@
             </div>
         </a>
 
-        <a style="color: black; text-decoration: none;" class="Chenare" href = '../graphTable/index'>
+        <a style="color: black; text-decoration: none;" class="Chenare" 
+        href = '../graphTable/index?Year=2016&Response=Obese%20(BMI%2030.0%20-%2099.8)&Break_Out_Category=Age+Group&BreakOut=18-24'>
             <div class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
             <div class="continut">
                 <h3>Bar Chart View</h3>

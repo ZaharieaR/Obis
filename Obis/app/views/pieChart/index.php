@@ -50,7 +50,8 @@
                 </div>
             </a>
     
-            <a style="color: black; text-decoration: none;" class="Chenare" href = '../graphTable/index'>
+            <a style="color: black; text-decoration: none;" class="Chenare" 
+            href = '../graphTable/index?Year=2016&Response=Obese%20(BMI%2030.0%20-%2099.8)&Break_Out_Category=Age+Group&BreakOut=18-24'>
                 <div class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
                 <div class="continut">
                     <h3>Bar Chart View</h3>
@@ -73,39 +74,46 @@
         </div> 
 
         <script>  
+        var querryStr = "";
+        var year = document.getElementById("Year").value;
+        var response = document.getElementById("Response").value;
+        var brkCategory = document.getElementById("Break_Out_Category").value;
+        var brkOut = document.getElementById("Break_Out").value;
+    
+        querryStr = "?Year=" + year + "&Response=" + response + "&Break_Out_Category=" + brkCategory + "&Break_Out=" + brkOut;
+        
           function verifyFilters() {
             var year = document.getElementById("Year").value;
+            var response = document.getElementById("Response").value;
+            var brkCategory = document.getElementById("Break_Out_Category").value;
+            var brkOut = document.getElementById("Break_Out").value;
             if(year == "None"){
               alert("You need to select all filters!");
               event.preventDefault();
             }
-            var response = document.getElementById("Response").value;
             if(response == "None") {
               alert("You need to select all filters!");
               event.preventDefault();
             }
-
-            var brkCategory = document.getElementById("Break_Out_Category").value;
             if(brkCategory == "None") {
               alert("You need to select all filters!");
               event.preventDefault();
             }
-
-            var brkOut = document.getElementById("Break_Out").value;
             if(brkOut == "None") {
               alert("You need to select all filters!");
               event.preventDefault();
             }
+            querryStr = "?Year=" + year + "&Response=" + response + "&Break_Out_Category=" + brkCategory + "&Break_Out=" + brkOut;
           }
 
-          var brkCat = document.getElementById("Break_Out_Category");
+          var brkCatToUpdate = document.getElementById("Break_Out_Category");
           var breakOutCategoryUpdate = function() {
-              var value = brkCat.value;
+              var value = brkCatToUpdate.value;
               var index = window.location.href.indexOf("Break_Out_Category=");
               var sel = window.location.href.substr(0, index);
               window.location.href = sel + "Break_Out_Category=" + value + "&BreakOut=None";
           }
-          brkCat.addEventListener("change",breakOutCategoryUpdate);
+          brkCatToUpdate.addEventListener("change",breakOutCategoryUpdate);
         </script> 
 
         <div class="chenar_graph">
@@ -113,29 +121,34 @@
         <canvas id="myChart"></canvas>
 
         </div>
-        <!-- <div class="chenar_pie"> -->
+
         <script>
 
         function getJson() { 
           return new Promise(function(resolve){
-            fetch('http://localhost/Obis/public/api/getPieChartData')
+            fetch('http://localhost/Obis/public/api/getPieChartData/' + querryStr)
                   .then(response => response.json())
                   .then(data => resolve(data));
-          });   
+          });  
+
         }
 
         async function callFct() {
-          var h1ID = document.getElementById("h1ID");
           var json = await getJson();
           var locations = [];
+          var sampleSize = [];
+          var dataValue = [];
+          var dataToPrint = [];
           
           for(var i=0; i<json.length; i++) {
-            var location = json[i];
-            locations.push(location["Location"]);
-            console.log(locations[i]);
+            var jsonElem = json[i];
+            locations.push(jsonElem["Location"]);
+            sampleSize.push(jsonElem["SampleSize"]);
+            dataValue.push(jsonElem["DataValue"]);
+            dataToPrint.push(Number((dataValue[i]/100) * sampleSize[i]));
           }
 
-          var o=[];
+          var colors=[];
           for(var i=0;i<56;i++)
           {
             var symbols,color;
@@ -145,7 +158,7 @@
             {
               color=color + symbols[Math.floor(Math.random() * 16)];
             }
-              o[i]=color;
+            colors[i]=color;
           }
           let myChart = document.getElementById('myChart').getContext('2d');
 
@@ -159,14 +172,9 @@
             data:{
               labels:locations,
               datasets:[{
-                data:[
-                  617594,
-                  181045,
-                  153060,
-                  617594,
-                ],
+                data:dataToPrint,
                 backgroundColor:[
-                  ...o
+                  ...colors
                 ],
                 borderWidth:1,
                 borderColor:'#777',
@@ -181,9 +189,6 @@
               animateScale:true
             },
               title:{
-                display:true,
-                text:'Largest Cities In Massachusetts',
-                fontSize:25
               },
               legend:{
                 display:true,
@@ -205,7 +210,6 @@
               }
 
             },
-            cutoutPercentage:80,
             animation:
             {
               animateScale:true

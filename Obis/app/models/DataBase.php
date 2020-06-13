@@ -7,6 +7,19 @@ class Database{
     private $db_name = 'twdb';
     private $conn;
 
+
+    public function getSampleAndDataValue($state, $year, $resp, $brkCat, $brk) {
+        $querry = "SELECT Sample_Size, Data_value FROM brfss WHERE Locationdesc='" . $state . "' AND Year='" . $year 
+                . "' AND Response='" . $resp . "' AND Break_Out_Category='" . $brkCat . "' AND Break_Out='" . $brk . "'";
+        $result = mysqli_query($this->conn, $querry);
+        $resultCheck = mysqli_num_rows($result);
+        if(($result == false) || ($resultCheck <= 0)){
+            return "NO DATA";
+        } else {
+            return $result;
+        }
+    }
+
     public function getSemple_Size($data_id) {
         $querry = "SELECT * FROM brfss WHERE data_id = " . $data_id;
         $result = mysqli_query($this->conn, $querry);
